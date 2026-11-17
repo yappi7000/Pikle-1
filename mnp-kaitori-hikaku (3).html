@@ -1,0 +1,307 @@
+<title>MNP・買取 比較シート</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: 白×ライトブルー固定（ダークモードなし）。上に要約、下に店舗ごとの入力カード。空欄＝未確認 */
+:root{
+  color-scheme:light;
+  --bg:#e8f4fd; --paper:#ffffff; --ink:#16324f; --muted:#4f6b87; --line:#bcdcf5;
+  --blue:#1e88e5; --blue-soft:#d6ecfc; --gold:#c98a00; --field:#f5fbff;
+  --ok:#15834c; --ok-soft:#ddf3e7; --warn:#9a5a00; --warn-soft:#fff3d6; --bad:#c62828; --bad-soft:#fde7e7;
+  --f-body:"Noto Sans JP","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-num:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;background:var(--paper);border:1px solid var(--line);border-top:6px solid var(--blue);border-radius:14px;padding:16px 18px}
+header .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--blue);font-weight:700}
+h1{margin:2px 0 0;font-size:clamp(22px,4vw,30px);font-weight:900;text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.rule{display:inline-flex;gap:6px;align-items:center;background:var(--warn-soft);color:var(--warn);font-weight:700;font-size:13px;padding:6px 12px;border-radius:999px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+nav.tabs button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:9px 16px;border-radius:10px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.tile{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.tile .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em}
+.tile .v{color:var(--blue);font-family:var(--f-num);font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;margin-top:2px}
+.tile .s{font-size:12px;color:var(--muted)}
+.rank{background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.rank h2,.panel h2{margin:0;font-size:15px;padding:12px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rank ol{list-style:none;margin:0;padding:0}
+.rank li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.rank li:last-child{border-bottom:0}
+.rank .name{font-weight:700;min-width:0}
+.rank .net{font-family:var(--f-num);font-weight:600;font-variant-numeric:tabular-nums;text-align:right;font-size:18px}
+.rank .meta{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.chip{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)} .chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)} .chip.base{background:var(--blue-soft);color:var(--blue)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card .top{display:flex;gap:8px;align-items:center}
+.card .top input{flex:1;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 10px}
+.grid .full{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--muted);font-weight:700;min-width:0}
+input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:7px 9px;width:100%;min-width:0}
+input[type=number]{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+input.unknown{border-style:dashed;background:var(--warn-soft)}
+textarea{min-height:64px;resize:vertical}
+.result{display:flex;justify-content:space-between;align-items:baseline;gap:8px;border-top:2px dashed var(--line);padding-top:10px;flex-wrap:wrap}
+.result .big{font-family:var(--f-num);font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+.result .why{font-size:12px;color:var(--muted);flex-basis:100%}
+.btn{font:inherit;font-weight:700;font-size:14px;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--blue);background:var(--blue);color:#fff}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.danger{background:transparent;border-color:var(--bad);color:var(--bad)}
+.btn.small{font-size:12px;padding:5px 10px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:12px}
+.panel .body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.note{font-size:12px;color:var(--muted)}
+.sample{background:var(--blue-soft);color:var(--blue);border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+pre.out{white-space:pre-wrap;word-break:break-word;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:10px;font-size:13px;margin:0;max-height:260px;overflow:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:700;font-size:13px}
+footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+footer a{color:var(--blue)}
+footer .sign{font-weight:900;color:var(--gold)}
+@media (max-width:420px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">やっぴ〜Presents｜ピクル第3弾 購入者特典</div>
+      <h1>MNP・買取 比較シート</h1>
+      <p>ピクルで集めた条件を入れるだけで、手残りと「まだ分からないこと」が一目で分かります。</p>
+    </div>
+    <span class="rule">空欄＝未確認として計算します</span>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-mnp" aria-selected="true" data-tab="mnp">MNP案件比較</button>
+    <button role="tab" id="tab-kaitori" aria-selected="false" data-tab="kaitori">買取比較</button>
+    <button role="tab" id="tab-rieki" aria-selected="false" data-tab="rieki">利益の3段階管理</button>
+    <button role="tab" id="tab-data" aria-selected="false" data-tab="data">保存・ピクル依頼文</button>
+  </nav>
+
+  <div id="sampleBar" class="sample" hidden>
+    <span>いま表示しているのは記事の架空サンプルです。</span>
+    <button class="btn small" id="clearSample">サンプルを消して自分の案件を入れる</button>
+  </div>
+
+  <!-- MNP -->
+  <section id="view-mnp" class="wrap" style="gap:16px">
+    <div class="summary" id="mnpSummary"></div>
+    <div class="rank"><h2><span>手残りの比較</span><span class="note">確認済みの項目が多い順に「比較の基準」を決めます</span></h2><ol id="mnpRank"></ol></div>
+    <div class="row"><button class="btn" id="addMnp">＋ 案件を追加</button></div>
+    <div class="cards" id="mnpCards"></div>
+  </section>
+
+  <!-- 買取 -->
+  <section id="view-kaitori" class="wrap" style="gap:16px" hidden>
+    <div class="panel"><h2><span>売る端末</span></h2>
+      <div class="body"><div class="grid">
+        <label class="full">機種<input id="k-model" placeholder="例：iPhone 17"></label>
+        <label>容量<input id="k-cap" placeholder="例：256GB"></label>
+        <label>色<input id="k-color" placeholder="例：ブラック"></label>
+        <label class="full">状態<input id="k-cond" placeholder="例：新品未開封"></label>
+      </div></div></div>
+    <div class="rank"><h2><span>受取額の比較</span><span class="note">減額・送料・振込手数料を引いた額</span></h2><ol id="kRank"></ol></div>
+    <div class="row"><button class="btn" id="addK">＋ 買取店を追加</button></div>
+    <div class="cards" id="kCards"></div>
+  </section>
+
+  <!-- 利益 -->
+  <section id="view-rieki" class="wrap" style="gap:16px" hidden>
+    <div class="summary" id="riekiSummary"></div>
+    <div class="panel"><h2><span>案件ごとの段階</span><span class="note">段階はMNP案件カードで切り替えます</span></h2>
+      <div class="body" id="riekiList"></div></div>
+    <p class="note">予定利益：案内条件から計算した見込み額／条件達成見込み：契約済みで必要条件を履行中／実現利益：入金・売却・実際の費用が確定した額。キャッシュバックは後日の判定や取消しもあるため、入金されるまでは実現利益に入れません。</p>
+  </section>
+
+  <!-- データ -->
+  <section id="view-data" class="wrap" style="gap:16px" hidden>
+    <div class="panel"><h2><span>未確認の項目をピクルへの依頼文にする</span></h2>
+      <div class="body">
+        <p class="note">空欄のままの項目だけを集めて、ピクルに貼り付ける依頼文を作ります。電話・予約・申し込みはしない指示つきです。</p>
+        <div class="row"><button class="btn" id="genPrompt">依頼文を作る</button><button class="btn ghost" id="copyPrompt">コピー</button></div>
+        <pre class="out" id="promptOut">「依頼文を作る」を押すと、ここに表示されます。</pre>
+      </div></div>
+    <div class="panel"><h2><span>バックアップ</span></h2>
+      <div class="body">
+        <p class="note">入力内容はこのブラウザだけに保存されます。機種変更やブラウザのデータ削除で消えるので、ときどきコピーしてメモアプリなどに残してください。</p>
+        <div class="row"><button class="btn" id="copyData">データをコピー</button><button class="btn ghost" id="copyCsv">MNP比較をCSVでコピー</button></div>
+        <label>貼り付けて復元<textarea id="restoreText" placeholder="コピーしたデータをここに貼り付け"></textarea></label>
+        <div class="row"><button class="btn ghost" id="restore">復元する</button>
+          <button class="btn danger" id="askReset">全部消す</button>
+          <span id="resetConfirm" hidden class="row"><span class="note">本当に全部消しますか？</span><button class="btn danger small" id="doReset">消す</button><button class="btn ghost small" id="cancelReset">やめる</button></span>
+        </div>
+      </div></div>
+  </section>
+
+  <footer>
+    <span>※ このシートは手残りの目安を出すためのものです。最終的な条件は、契約・売却の前に必ず店舗の最新案内で確認してください。キャッシュバックの受取条件や税務上の扱いは別途確認が必要です。</span>
+    <span>MNP案件の相談やシミュレーターは公式LINEで案内しています：<a href="https://lin.ee/AsTWK4D" target="_blank" rel="noopener">lin.ee/AsTWK4D</a></span>
+    <span class="sign">エンジョイNext Day</span>
+  </footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function(){
+  var KEY='yappi-mnp-kaitori-v1';
+  var STAGES=['予定利益','条件達成見込み','実現利益'];
+  // MNP fields: [key,label,sign,kind]  kind: money/months
+  var MF=[['cb','キャッシュバック（円）',1],['sell','端末売却額（円）',1],['buy','端末購入費（円）',-1],['fee','契約事務手数料（円）',-1],
+          ['monthly','回線維持費（月額・円）',0],['months','維持月数',0],['opt','オプション（月額・円）',0],['optMonths','オプション月数',0],['other','その他経費（円）',-1]];
+  var KF=[['price','買取価格（円）',1],['deduct','減額見込み（円）',-1],['ship','送料（円）',-1],['tfee','振込手数料（円）',-1]];
+  function uid(){return Math.random().toString(36).slice(2,9)}
+  function sample(){return {sample:true,
+    mnp:[
+      {id:uid(),name:'A店',carrier:'',cb:30000,sell:'',buy:'',fee:4950,monthly:2000,months:6,opt:550,optMonths:'',other:'',checked:'',source:'',memo:'オプションの必要月数は未確認',stage:'予定利益',paid:''},
+      {id:uid(),name:'B店',carrier:'',cb:25000,sell:0,buy:0,fee:4950,monthly:2000,months:6,opt:0,optMonths:0,other:0,checked:'',source:'',memo:'',stage:'予定利益',paid:''},
+      {id:uid(),name:'C店',carrier:'',cb:28000,sell:'',buy:'',fee:4950,monthly:'',months:'',opt:'',optMonths:'',other:'',checked:'',source:'',memo:'オプション・特典受取条件とも未確認',stage:'予定利益',paid:''}],
+    kaitori:{model:'iPhone（例）',cap:'256GB',color:'',cond:'新品未開封',shops:[
+      {id:uid(),name:'買取店X',price:120000,deduct:0,ship:0,tfee:0,guarantee:'',checked:'',source:'',memo:''},
+      {id:uid(),name:'買取店Y',price:122000,deduct:'',ship:1000,tfee:'',guarantee:'',checked:'',source:'',memo:'振込手数料と減額条件は未確認'}]}};}
+  function blank(){return {sample:false,mnp:[],kaitori:{model:'',cap:'',color:'',cond:'',shops:[]}}}
+  var S;
+  try{var raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):sample()}catch(e){S=sample()}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function $(id){return document.getElementById(id)}
+  function known(v){return v!==''&&v!==null&&v!==undefined&&!isNaN(Number(v))}
+  function yen(n){return (n<0?'−':'')+Math.abs(Math.round(n)).toLocaleString('ja-JP')+'円'}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  var toastT;
+  function toast(m){var t=$('toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},2200)}
+  function copy(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast('コピーしました')},function(){fallback(text)})}else fallback(text)}
+  function fallback(text){var ta=$('restoreText');ta.value=text;ta.focus();ta.select();toast('コピーできない環境です。選択した文字を長押しでコピーしてください')}
+
+  // ---- MNP calc
+  function calcMnp(r){
+    var total=0,unk=[];
+    function add(k,label,sign){if(known(r[k]))total+=sign*Number(r[k]);else unk.push(label)}
+    add('cb','キャッシュバック',1);add('sell','端末売却額',1);add('buy','端末購入費',-1);add('fee','事務手数料',-1);add('other','その他経費',-1);
+    if(known(r.monthly)&&known(r.months))total-=Number(r.monthly)*Number(r.months);else{if(!known(r.monthly))unk.push('回線維持費');if(!known(r.months))unk.push('維持月数')}
+    if(known(r.opt)&&known(r.optMonths))total-=Number(r.opt)*Number(r.optMonths);else{if(!known(r.opt))unk.push('オプション月額');if(!known(r.optMonths))unk.push('オプション月数')}
+    var filled=MF.filter(function(f){return known(r[f[0]])}).length;
+    return {net:total,unk:unk,rate:filled/MF.length};
+  }
+  function calcK(r){var t=0,unk=[];KF.forEach(function(f){if(known(r[f[0]]))t+=f[2]*Number(r[f[0]]);else unk.push(f[1].replace(/（.*）/,''))});
+    return {net:t,unk:unk,rate:KF.filter(function(f){return known(r[f[0]])}).length/KF.length}}
+  function status(c){return c.unk.length===0?'<span class="chip ok">全項目確認済み</span>':'<span class="chip warn">暫定・未確認'+c.unk.length+'件</span>'}
+
+  function renderMnp(){
+    var rows=S.mnp, calcs=rows.map(calcMnp);
+    // baseline = most confirmed, tie -> higher net
+    var base=-1;calcs.forEach(function(c,i){if(base<0||c.rate>calcs[base].rate||(c.rate===calcs[base].rate&&c.net>calcs[base].net))base=i});
+    var order=rows.map(function(_,i){return i}).sort(function(a,b){return calcs[b].net-calcs[a].net});
+    $('mnpRank').innerHTML=rows.length?order.map(function(i){var r=rows[i],c=calcs[i];
+      return '<li><span class="name">'+esc(r.name||'名前なし')+(r.carrier?'（'+esc(r.carrier)+'）':'')+'</span><span class="net">'+yen(c.net)+'</span><span class="meta">'+status(c)+(i===base?'<span class="chip base">比較の基準</span>':'')+(c.unk.length?'<span>未確認：'+esc(c.unk.join('・'))+'</span>':'')+'</span></li>'}).join('')
+      :'<li><span class="name note">まだ案件がありません。「＋ 案件を追加」から入力してください。</span></li>';
+    var confirmed=calcs.filter(function(c){return c.unk.length===0});
+    var bestC=confirmed.length?Math.max.apply(null,confirmed.map(function(c){return c.net})):null;
+    var unkTotal=calcs.reduce(function(s,c){return s+c.unk.length},0);
+    $('mnpSummary').innerHTML=
+      tile('比較中の案件',rows.length+'件','')+
+      tile('確認済み案件の最高手残り',bestC===null?'—':yen(bestC),'未確認ゼロの案件だけで比較')+
+      tile('残っている未確認項目',unkTotal+'件',unkTotal?'「保存・ピクル依頼文」タブで依頼文にできます':'すべて確認済みです');
+    $('mnpCards').innerHTML=rows.map(function(r,i){var c=calcs[i];
+      return '<article class="card" data-i="'+i+'"><div class="top"><input aria-label="店舗名" data-k="name" value="'+esc(r.name)+'" placeholder="店舗名"><button class="btn danger small" data-del="'+i+'">削除</button></div>'+
+      '<div class="grid"><label class="full">キャリア・プラン<input data-k="carrier" value="'+esc(r.carrier)+'" placeholder="例：〇〇 SIMのみ"></label>'+
+      MF.map(function(f){return '<label>'+f[1]+'<input type="number" inputmode="numeric" data-k="'+f[0]+'" value="'+esc(r[f[0]])+'" placeholder="未確認"'+(known(r[f[0]])?'':' class="unknown"')+'></label>'}).join('')+
+      '<label>確認日時<input data-k="checked" value="'+esc(r.checked)+'" placeholder="例：11/17 14時"></label><label>情報源<input data-k="source" value="'+esc(r.source)+'" placeholder="URL・電話など"></label>'+
+      '<label>利益の段階<select data-k="stage">'+STAGES.map(function(s){return '<option'+(r.stage===s?' selected':'')+'>'+s+'</option>'}).join('')+'</select></label>'+
+      '<label>入金日（実現時）<input data-k="paid" value="'+esc(r.paid)+'" placeholder="例：2027/2/10"></label>'+
+      '<label class="full">メモ<input data-k="memo" value="'+esc(r.memo)+'" placeholder="気になる条件など"></label></div>'+
+      '<div class="result"><span>手残り</span><span class="big">'+yen(c.net)+'</span><span class="why">'+(c.unk.length?'未確認：'+esc(c.unk.join('・'))+'（空欄の項目は0円として仮計算しています）':'すべての項目が入力済みです')+'</span></div></article>'}).join('');
+  }
+  function tile(k,v,s){return '<div class="tile"><div class="k">'+k+'</div><div class="v">'+v+'</div><div class="s">'+s+'</div></div>'}
+
+  function renderK(){
+    var K=S.kaitori;['model','cap','color','cond'].forEach(function(k){var el=$('k-'+k);if(document.activeElement!==el)el.value=K[k]||''});
+    var calcs=K.shops.map(calcK);
+    var order=K.shops.map(function(_,i){return i}).sort(function(a,b){return calcs[b].net-calcs[a].net});
+    $('kRank').innerHTML=K.shops.length?order.map(function(i){var r=K.shops[i],c=calcs[i];
+      return '<li><span class="name">'+esc(r.name||'名前なし')+'</span><span class="net">'+yen(c.net)+'</span><span class="meta">'+status(c)+(r.guarantee?'<span>価格保証：'+esc(r.guarantee)+'</span>':'<span>価格保証の期限：未確認</span>')+'</span></li>'}).join('')
+      :'<li><span class="name note">まだ買取店がありません。</span></li>';
+    $('kCards').innerHTML=K.shops.map(function(r,i){var c=calcs[i];
+      return '<article class="card" data-k-i="'+i+'"><div class="top"><input aria-label="買取店名" data-k="name" value="'+esc(r.name)+'" placeholder="買取店名"><button class="btn danger small" data-kdel="'+i+'">削除</button></div><div class="grid">'+
+      KF.map(function(f){return '<label>'+f[1]+'<input type="number" inputmode="numeric" data-k="'+f[0]+'" value="'+esc(r[f[0]])+'" placeholder="未確認"'+(known(r[f[0]])?'':' class="unknown"')+'></label>'}).join('')+
+      '<label>価格保証の期限<input data-k="guarantee" value="'+esc(r.guarantee)+'" placeholder="例：3日間"></label><label>確認日時<input data-k="checked" value="'+esc(r.checked)+'" placeholder="例：11/17 15時"></label>'+
+      '<label class="full">情報源<input data-k="source" value="'+esc(r.source)+'" placeholder="URL"></label><label class="full">メモ<input data-k="memo" value="'+esc(r.memo)+'"></label></div>'+
+      '<div class="result"><span>受取見込み</span><span class="big">'+yen(c.net)+'</span><span class="why">'+(c.unk.length?'未確認：'+esc(c.unk.join('・'))+'（空欄は0円として仮計算）':'すべての項目が入力済みです')+'</span></div></article>'}).join('');
+  }
+
+  function renderRieki(){
+    var sums=[0,0,0],cnt=[0,0,0],unk=[0,0,0];
+    S.mnp.forEach(function(r){var i=STAGES.indexOf(r.stage);if(i<0)i=0;var c=calcMnp(r);sums[i]+=c.net;cnt[i]++;if(c.unk.length)unk[i]++});
+    $('riekiSummary').innerHTML=STAGES.map(function(s,i){return tile(s,yen(sums[i]),cnt[i]+'件'+(unk[i]?'（うち未確認あり'+unk[i]+'件）':''))}).join('');
+    $('riekiList').innerHTML=S.mnp.length?S.mnp.map(function(r){var c=calcMnp(r);var cls=r.stage==='実現利益'?'ok':(r.stage==='条件達成見込み'?'base':'warn');
+      return '<div class="row" style="justify-content:space-between"><span><b>'+esc(r.name||'名前なし')+'</b> <span class="chip '+cls+'">'+esc(r.stage)+'</span>'+(r.paid?' <span class="note">入金日 '+esc(r.paid)+'</span>':'')+'</span><span style="font-family:var(--f-num);font-weight:600">'+yen(c.net)+'</span></div>'}).join('')
+      :'<p class="note">MNP案件を追加すると、ここに段階別の一覧が出ます。</p>';
+  }
+
+  function renderAll(){$('sampleBar').hidden=!S.sample;renderMnp();renderK();renderRieki()}
+
+  // events
+  document.querySelectorAll('nav.tabs button').forEach(function(b){b.addEventListener('click',function(){
+    document.querySelectorAll('nav.tabs button').forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false')});
+    ['mnp','kaitori','rieki','data'].forEach(function(v){$('view-'+v).hidden=(v!==b.dataset.tab)});
+    if(b.dataset.tab==='rieki')renderRieki();})});
+  function onField(e,commit){
+    var el=e.target,k=el.dataset.k;if(!k)return;
+    var card=el.closest('[data-i]'),kc=el.closest('[data-k-i]');
+    var v=el.type==='number'?(el.value===''?'':Number(el.value)):el.value;
+    if(card){S.mnp[+card.dataset.i][k]=v}else if(kc){S.kaitori.shops[+kc.dataset.kI][k]=v}else return;
+    S.sample=false;save();
+    if(commit){renderAll()}else{ // live update of totals without rebuilding the input being typed in
+      if(card){var c=calcMnp(S.mnp[+card.dataset.i]);card.querySelector('.big').textContent=yen(c.net)}
+      if(kc){var c2=calcK(S.kaitori.shops[+kc.dataset.kI]);kc.querySelector('.big').textContent=yen(c2.net)}
+      if(el.type==='number')el.classList.toggle('unknown',el.value==='');}
+  }
+  document.addEventListener('input',function(e){onField(e,false)});
+  document.addEventListener('change',function(e){onField(e,true)});
+  ['model','cap','color','cond'].forEach(function(k){$('k-'+k).addEventListener('input',function(e){S.kaitori[k]=e.target.value;S.sample=false;save()})});
+  document.addEventListener('click',function(e){
+    var d=e.target.closest('[data-del]');if(d){S.mnp.splice(+d.dataset.del,1);save();renderAll();toast('削除しました');return}
+    var kd=e.target.closest('[data-kdel]');if(kd){S.kaitori.shops.splice(+kd.dataset.kdel,1);save();renderAll();toast('削除しました')}});
+  $('addMnp').addEventListener('click',function(){S.mnp.push({id:uid(),name:'',carrier:'',cb:'',sell:'',buy:'',fee:'',monthly:'',months:'',opt:'',optMonths:'',other:'',checked:'',source:'',memo:'',stage:'予定利益',paid:''});save();renderAll();toast('案件を追加しました')});
+  $('addK').addEventListener('click',function(){S.kaitori.shops.push({id:uid(),name:'',price:'',deduct:'',ship:'',tfee:'',guarantee:'',checked:'',source:'',memo:''});save();renderAll();toast('買取店を追加しました')});
+  $('clearSample').addEventListener('click',function(){S=blank();save();renderAll();toast('サンプルを消しました')});
+
+  $('genPrompt').addEventListener('click',function(){
+    var lines=[];
+    S.mnp.forEach(function(r){var u=calcMnp(r).unk;if(u.length)lines.push('・'+(r.name||'名前なしの店舗')+'：'+u.join('、'))});
+    var K=S.kaitori,klines=[];
+    K.shops.forEach(function(r){var u=calcK(r).unk;if(!r.guarantee)u.push('価格保証の期限');if(u.length)klines.push('・'+(r.name||'名前なしの買取店')+'：'+u.join('、'))});
+    if(!lines.length&&!klines.length){$('promptOut').textContent='未確認の項目はありません。この条件で手残りを最終確認しましょう。';return}
+    var t='次の項目が未確認です。公式サイト・公式告知で調べ、分からない項目だけ問い合わせで確認してください。\n';
+    if(lines.length)t+='\n【MNP案件】\n'+lines.join('\n')+'\n';
+    if(klines.length)t+='\n【買取（'+[K.model,K.cap,K.color,K.cond].filter(Boolean).join('・')+'）】\n'+klines.join('\n')+'\n';
+    t+='\n確認できた内容と未確認のままの項目を分けて、確認日時と情報源付きで報告してください。\n推測で数字を埋めないでください。\n電話をかける前に用件を私に見せて、確認を待ってください。\n契約・予約・申し込み・買取申込み・個人情報の提供はしないでください。\n店舗が回答できない場合は、そこで終了してください。';
+    $('promptOut').textContent=t});
+  $('copyPrompt').addEventListener('click',function(){var t=$('promptOut').textContent;if(t.indexOf('「依頼文を作る」')===0){toast('先に「依頼文を作る」を押してください');return}copy(t)});
+  $('copyData').addEventListener('click',function(){copy(JSON.stringify(S))});
+  $('copyCsv').addEventListener('click',function(){
+    var head=['店舗名','キャリア・プラン'].concat(MF.map(function(f){return f[1]})).concat(['手残り','未確認','段階','確認日時','情報源','メモ']);
+    var q=function(v){v=String(v==null?'':v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+    var rows=S.mnp.map(function(r){var c=calcMnp(r);return [r.name,r.carrier].concat(MF.map(function(f){return known(r[f[0]])?r[f[0]]:'未確認'})).concat([Math.round(c.net),c.unk.join('・'),r.stage,r.checked,r.source,r.memo]).map(q).join(',')});
+    copy([head.map(q).join(',')].concat(rows).join('\n'))});
+  $('restore').addEventListener('click',function(){
+    try{var d=JSON.parse($('restoreText').value);if(!d||!Array.isArray(d.mnp)||!d.kaitori)throw 0;S=d;S.sample=false;save();renderAll();toast('復元しました')}
+    catch(e){toast('復元できませんでした。「データをコピー」で取った文字をそのまま貼り付けてください')}});
+  $('askReset').addEventListener('click',function(){$('resetConfirm').hidden=false});
+  $('cancelReset').addEventListener('click',function(){$('resetConfirm').hidden=true});
+  $('doReset').addEventListener('click',function(){S=blank();save();$('resetConfirm').hidden=true;renderAll();toast('全部消しました')});
+
+  renderAll();
+})();
+</script>
